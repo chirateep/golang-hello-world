@@ -9,6 +9,7 @@ COPY . .
 RUN ls -la /app
 
 ## Build the command inside the container.
+RUN go mod vendor
 RUN CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o go-hello-world
 #
 # Use a Docker multi-stage build to create a lean production image.
@@ -22,7 +23,6 @@ COPY --from=builder /usr/local/go/lib/time/zoneinfo.zip /
 ENV ZONEINFO=/zoneinfo.zip
 
 # Copy the binary to the production image from the builder stage.
-COPY --from=builder /app/configs  /configs
 COPY --from=builder /app/go-hello-world /go-hello-world
 
 # Run the web service on container startup.
