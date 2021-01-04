@@ -20,3 +20,36 @@ spec:
   selector:
     matchLabels:
       app: golang-hello-world
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: golang-hello-world
+spec:
+  selector:
+    app: golang-hello-world
+  ports:
+    - port: 1323
+  type: NodePort
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: golang-hello-world-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /hello-world
+            pathType: Prefix
+            backend:
+              service:
+                name: golang-hello-world
+                port:
+                  number: 1323
