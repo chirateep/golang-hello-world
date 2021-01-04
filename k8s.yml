@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: golang-hello-world
+  labels:
+    app: golang-hello-world
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: golang-hello-world
+      labels:
+        app: golang-hello-world
+    spec:
+      containers:
+        - name: golang-hello-world
+          image: 'kinggrever/golang-hello-world:$IMAGE_VERSION'
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: golang-hello-world
